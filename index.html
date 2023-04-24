@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="app">
+        <h1>AI Chatbot</h1>
+        <div id="chatContainer"></div>
+        <button id="dictationButton">Start Dictation</button>
+        <div>
+            <label for="context">Context:</label>
+            <input type="text" id="context" placeholder="Enter context...">
+        </div>
+        <div>
+            <label for="role">Role:</label>
+            <select id="role">
+                <!-- The options will be populated by JavaScript -->
+            </select>
+        </div>
+        <div>
+            <label for="explicit">Explicit:</label>
+            <select id="explicit">
+                <option value="no">No</option>
+                <option value="yes">Yes</option>
+            </select>
+        </div>
+        <script type="module">
+            import { roles } from "./roles.js";
+
+            const roleSelect = document.getElementById("role");
+            roles.forEach(({ name, role }) => {
+                const option = document.createElement("option");
+                option.value = `${name} | ${role}`;
+                option.textContent = `${name} - ${role}`;
+                roleSelect.appendChild(option);
+            });
+        </script>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>

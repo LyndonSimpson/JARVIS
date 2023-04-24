@@ -1,40 +1,26 @@
+import annyang from "annyang";
+
 const chatContainer = document.getElementById("chatContainer");
 const dictationButton = document.getElementById("dictationButton");
-let isDictating = false;
-let recognition;
 
-if ("webkitSpeechRecognition" in window) {
-  recognition = new webkitSpeechRecognition();
-  recognition.continuous = true;
-  recognition.interimResults = true;
-  recognition.lang = "en-US";
-
-  recognition.onstart = () => {
-    isDictating = true;
-    dictationButton.innerText = "Stop Dictation";
-  };
-
-  recognition.onend = () => {
-    isDictating = false;
-    dictationButton.innerText = "Start Dictation";
-  };
-
-  recognition.onresult = async (event) => {
-    const lastIndex = event.results.length - 1;
-    const transcript = event.results[lastIndex][0].transcript.trim();
-
-    if (event.results[lastIndex].isFinal) {
+if (annyang) {
+  const commands = {
+    "say *transcript": async (transcript) => {
       const response = await getChatbotResponse(transcript);
       updateChat("User", transcript);
       updateChat("Chatbot", response);
-    }
+    },
   };
 
+  annyang.addCommands(commands);
+
   dictationButton.onclick = () => {
-    if (isDictating) {
-      recognition.stop();
+    if (annyang.isListening()) {
+      annyang.pause();
+      dictationButton.innerText = "Start Dictation";
     } else {
-      recognition.start();
+      annyang.resume();
+      dictationButton.innerText = "Stop Dictation";
     }
   };
 } else {
