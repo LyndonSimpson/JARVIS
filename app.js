@@ -1,5 +1,3 @@
-import annyang from "annyang";
-
 const chatContainer = document.getElementById("chatContainer");
 const dictationButton = document.getElementById("dictationButton");
 
@@ -13,13 +11,14 @@ if (annyang) {
   };
 
   annyang.addCommands(commands);
+  annyang.debug(); // Optional: to show debug messages in the console
 
   dictationButton.onclick = () => {
     if (annyang.isListening()) {
-      annyang.pause();
+      annyang.abort(); // Stop listening
       dictationButton.innerText = "Start Dictation";
     } else {
-      annyang.resume();
+      annyang.start(); // Start listening
       dictationButton.innerText = "Stop Dictation";
     }
   };
@@ -59,8 +58,8 @@ async function getChatbotResponse(message) {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      message: `${message}. ${explicitInput}`,
       role: `${impersonatedRole}. ${context}`,
+      message: `${message}. ${explicitInput}`,
     }),
   });
   const data = await response.json();
