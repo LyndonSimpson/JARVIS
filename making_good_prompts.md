@@ -101,3 +101,8 @@ Prompt:
 "Summarize the text below into 500 words or less. Create sections for each important point with a brief summary of that point."
 [insert text]
 Copy paste
+
+
+
+
+Need to set up better params for JARVIS
